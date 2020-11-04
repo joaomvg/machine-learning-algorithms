@@ -44,21 +44,25 @@ class Tensor:
 
     def transpose(self,shape):
         self.array=self.array.transpose(shape)
-        for w in self.grad:
-            if isinstance(self.grad[w],np.ndarray):
-                self.grad[w]=self.grad[w].transpose(shape)
+        if self.calc_grad:
+            for w in self.grad:
+                if isinstance(self.grad[w],np.ndarray):
+                    self.grad[w]=self.grad[w].transpose(shape)
+
 
     def squeeze(self,axis=0):
         result=self.array.squeeze(axis)
-        grad={}
-        for w in self.grad:
-            if isinstance(self.grad[w],np.ndarray):
-                grad[w]=self.grad[w].squeeze(axis)
-            else:
-                grad[w]=0
+        if self.calc_grad:
+            grad={}
+            for w in self.grad:
+                if isinstance(self.grad[w],np.ndarray):
+                    grad[w]=self.grad[w].squeeze(axis)
+                else:
+                    grad[w]=0
+            return Tensor(result,grad=grad)
+        else:
+            return Tensor(result,grad='NA')
         
-        return Tensor(result,grad=grad)
-
     def __getitem__(self,index):
         result=self.array[index]
         grad={}

@@ -10,4 +10,5 @@ The list of algorithms covered:
 * Gradient Boosting for classification and regression
 * Feed-Foward neural network
 * K-nearest-neighbors
+* Restricted Boltzmann Machine
 * K-means

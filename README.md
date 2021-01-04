@@ -8,5 +8,7 @@ The list of algorithms covered:
 * Random Forest
 * AdaBoost: using a deque as a fundamental data structure
 * Gradient Boosting for classification and regression
+* Feed-Foward neural network
 * K-nearest-neighbors
+* Restricted Boltzmann Machine
 * K-means

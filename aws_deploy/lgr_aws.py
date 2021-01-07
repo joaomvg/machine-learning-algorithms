@@ -4,7 +4,7 @@ import argparse
 import json
 
 from sklearn.linear_model import LogisticRegression 
-from test import A
+from model.test import A
 
 def input_fn(input_data,content_type):
     

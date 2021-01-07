@@ -1,3 +1,4 @@
 __pycache__/
 content/.vscode/
 *.pyc
+aws_deploy/.ipynb_checkpoints/

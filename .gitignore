@@ -3,3 +3,4 @@ content/.vscode/
 *.pyc
 aws_deploy/.ipynb_checkpoints/
 .ipynb_checkpoints/
+.vscode/

@@ -489,7 +489,7 @@ if __name__=="__main__":
                 loss.backward()
                 opt.step()
 
-            if epoch%2=10==0:
+            if epoch%10==0:
                 print('Loss: ',total_loss/L)
     
     train(model,loss,opt,data_loader,20)

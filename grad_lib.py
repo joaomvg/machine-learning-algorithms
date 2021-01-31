@@ -59,6 +59,17 @@ class Tensor:
         
         return Tensor(result,grad=grad)
 
+    def __getitem__(self,index):
+        result=self.array[index]
+        grad={}
+        for w in self.grad:
+            if isinstance(self.grad[w],np.ndarray):
+                grad[w]=self.grad[w][index]
+            else:
+                grad[w]=0
+        
+        return Tensor(result,grad=grad)
+
     def make_grad(self,):
         shape=self.array.shape
         Kron=1

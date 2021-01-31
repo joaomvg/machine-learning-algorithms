@@ -376,7 +376,9 @@ class LinearLayer:
             self.bias=Tensor(bias_,requires_grad=True)
         else:
             self.bias=0
-    
+
+        self.trainable()
+        
     def __call__(self,x):
         """
         x: Tensor [batch,in_dim]
@@ -388,6 +390,15 @@ class LinearLayer:
         weight=np.random.normal(0,1,(self.in_dim,self.out_dim))
         bias=np.random.normal(0,1,(1,self.out_dim))
         return weight, bias
+
+    def trainable(self):
+        tensors={}
+        for name,obj in self.__dict__:
+            if isinstance(obj,Tensor):
+                if obj.requires_grad:
+                    tensors[name]=obj
+        self.tensors=tensors
+
 
 class FeedForward:
 

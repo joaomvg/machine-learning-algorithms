@@ -42,6 +42,23 @@ class Tensor:
     def T(self):
         return self.array.T
 
+    def transpose(self,shape):
+        self.array=self.array.transpose(shape)
+        for w in self.grad:
+            if isinstance(self.grad[w],np.ndarray):
+                self.grad[w]=self.grad[w].transpose(shape)
+
+    def squeeze(self,axis=0):
+        result=self.array.squeeze(axis)
+        grad={}
+        for w in self.grad:
+            if isinstance(self.grad[w],np.ndarray):
+                grad[w]=self.grad[w].squeeze(axis)
+            else:
+                grad[w]=0
+        
+        return Tensor(result,grad=grad)
+
     def make_grad(self,):
         shape=self.array.shape
         Kron=1
@@ -295,6 +312,42 @@ class ReLU:
 
         return z
 
+class Softmax:
+
+    def __call__(self,x):
+        """calculate grads after softmaz operation
+
+        Args:
+            x (Tensor): shape=(batch,num_classes)
+
+        Returns:
+            Tensor: contains gradients relative to softmax function
+        """
+    
+        prob=np.exp(x.array)
+        Z=prob.sum(1).reshape(-1,1)
+        prob=prob/Z
+
+        if Tensor.calc_grad:
+            grad={}
+            for w in x.grad:
+                if x.grad[w] is not 0:
+                    i=x.ndim
+                    l=x.grad[w].ndim
+                    expand=tuple([k for k in range(i,l)])
+                    grad_func=np.expand_dims(prob,axis=expand)
+                    dp=grad_func*x.grad[w]
+                    grad[w]=dp-grad_func*np.expand_dims(dp.sum(1),axis=1)
+                else:
+                    grad[w]=0
+
+            return Tensor(prob,grad=grad)
+        else:
+            return Tensor(prob,grad='NA')
+
+
+
+
 # %% [markdown]
 # 
 # # Feed-Forward
@@ -327,10 +380,10 @@ class LinearLayer:
 
 class FeedForward:
 
-    def __init__(self,input_dim,hidden_dim,out_dim=1):
+    def __init__(self,input_dim,hidden_dim,out_dim=1,n_hid_layers=0):
         self.train() 
         self.in_layer=LinearLayer(input_dim,hidden_dim)
-        self.hid_layer=LinearLayer(hidden_dim,hidden_dim)
+        self.hid_layers=[LinearLayer(hidden_dim,hidden_dim) for i in range(n_hid_layers)]
         self.out_layer=LinearLayer(hidden_dim,out_dim)
         self.relu=ReLU()
         self.sig=Sigmoid()
@@ -341,8 +394,9 @@ class FeedForward:
         """
         out=self.in_layer(x)
         out=self.relu(out)
-        out=self.hid_layer(out)
-        out=self.relu(out)
+        for layer in self.hid_layers:
+            out=layer(out)
+            out=self.relu(out)
         out=self.out_layer(out)
         out=self.sig(out)
 

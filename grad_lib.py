@@ -358,10 +358,9 @@ class Softmax:
 
 
 
-
-# %% [markdown]
-# 
-# # Feed-Forward
+"""
+Training models 
+"""
 
 # %%
 class LinearLayer:
@@ -377,7 +376,8 @@ class LinearLayer:
         else:
             self.bias=0
 
-        self.trainable()
+        self.trainable={id(self.weight): self.weight,
+                        id(self.bias): self.bias}
         
     def __call__(self,x):
         """
@@ -390,14 +390,6 @@ class LinearLayer:
         weight=np.random.normal(0,1,(self.in_dim,self.out_dim))
         bias=np.random.normal(0,1,(1,self.out_dim))
         return weight, bias
-
-    def trainable(self):
-        tensors={}
-        for name,obj in self.__dict__:
-            if isinstance(obj,Tensor):
-                if obj.requires_grad:
-                    tensors[name]=obj
-        self.tensors=tensors
 
 
 class FeedForward:
@@ -508,6 +500,7 @@ class Optimizer:
         return tensors
 
 
+
 # %%
 class DataSet:
     def __init__(self,x,y,batch_size=28):
@@ -517,7 +510,7 @@ class DataSet:
 
     def __len__(self):
 
-        return x.shape[0]
+        return self.data_x.shape[0]
         
     def __iter__(self):
         L=self.data_x.shape[0]

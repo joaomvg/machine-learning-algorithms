@@ -1,11 +1,9 @@
 # To add a new cell, type '# %%'
 # To add a new markdown cell, type '# %% [markdown]'
-# %%
+
 import numpy as np
 import pandas as pd
 
-
-# %%
 class Tensor:
     calc_grad=True 
 
@@ -532,7 +530,6 @@ if __name__=="__main__":
     from sklearn.datasets import load_breast_cancer
     from tqdm import tqdm 
 
-    # %%
     data=load_breast_cancer()
     x=data['data']
     y=data['target']

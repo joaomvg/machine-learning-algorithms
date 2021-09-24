@@ -1,4 +1,4 @@
-# data-science-codes
+# machine-learning-algorithms
 
 Various Python implementations of machine learning algorithms as well as other important concepts in statistics and data science.
 The list of algorithms covered:

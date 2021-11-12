@@ -9,6 +9,9 @@ The list of algorithms covered:
 * AdaBoost: using a deque as a fundamental data structure
 * Gradient Boosting for classification and regression
 * Feed-Foward neural network
+* Convolutional Neural Network
+* Recurrent Neural Network
 * K-nearest-neighbors
 * Restricted Boltzmann Machine
 * K-means
+* Bayesian Network

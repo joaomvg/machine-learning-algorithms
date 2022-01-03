@@ -15,3 +15,4 @@ The list of algorithms covered:
 * Restricted Boltzmann Machine
 * K-means
 * Bayesian Network
+* Kernels for classification and regresion
